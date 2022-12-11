@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="function.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro&family=Arimo&family=Oxygen:wght@300&family=Titan+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>ToDo-List</title>
+</head>
+<body>
+    <header>
+        <h1>ToDo Liste</h1>
+    </header>
+    <nav>
+        <ul class = "menu">
+            <li onclick="addTodo()" title = "Neue ToDo-Liste erstellen">Neue Liste</li>
+            <li onclick="add()" title = "Neuen Eintrag hinzufügen">+</li>
+            <li onclick="saveTodo()" title = "ToDo-Liste speichern">Speichern</li>
+            <li onclick="remTodo()" title = "ToDo-Liste entfernen">Entfernen</li>
+        </ul>
+        <ul class = "todolist">
+        </ul>
+    </nav>
+    <main style = "display:none;">
+    <div class="table">
+        <!-- 
+            tr#id ++
+            td.text 
+        -->
+        <table id="list">
+            <tr id="tr_id_0">
+                <td>
+                    <input type="checkbox" class="form-check-input" value="checkedValue" >
+                </td>
+                <td class="text"><input type="text" id = "input0" class="editInput" value="" placeholder="ToDo eintragen"></td>
+                <td>
+                    <input type="image" class="acceptButton" onclick="acceptEdit(0)" src="./images/accept.png" alt="Accept">
+                </td>
+                <td>
+                    <input type="image" class="delButton" onclick="del(0)" src="./images/delete.png" alt="Delete">
+                </td>
+            </tr>
+        </table>
+    </div>
+    </main>
+</body>
+</html>
+<script>
+
+   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Damit das Tabellenobjekt "list" sofort nach dem Laden der Webseite
+    * im JavaScript-Umgebung verfügbar ist, muss sie an dieser Stelle
+    * verbunden werden, nachdem die Tabelle bereits geladen wurde.
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+     list=document.getElementById("list");
+
+   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Das erste Element der Tabelle erhält den KeyDown-Ereignis-Verbindung,
+    * wenn noch gar keine Todoliste angelegt wurde.
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+     document.getElementById("input0").addEventListener("keydown",(e)=>{
+        applyEdit("input0",e);
+    });
+
+   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Falls im localStorage bereits Todolisten verfügbar sind, dann werden
+    * deren Header und die Tab-Leiste geladen.
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    todoManager.loadtabs();
+
+   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Wenn bereits eine Todoliste zuvor geöffnet wurde, dann wird sie
+    * erneut in den WebInterface geladen.
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    todoManager.download();
+
+   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Diese Funktion stellt sicher, dass beim Ändern der Fenstergröße,
+    * die Body-Höhe und der .table-Div-Höhe proportional angepasst wird.
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    function docResize ()
+    {
+        document.body.style.height = (window.innerHeight - 10) + "px";
+        // *** //
+        document.querySelector(".table").style.height = (window.innerHeight - 240) + "px";
+    }
+
+   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Beim erstmaligen Laden der Webseite wird diese Funktion einmalig
+    * geladen, um die Anpassung sofort wirksam zu machen.
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    docResize();
+
+   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Damit beim Größenänderung des Fensters, das erwünschte Effekt
+    * auch zustande kommt, wird die Funktion an die entsprechende
+    * Ereignis des Fensters verbunden.
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    window.onresize = docResize;
+
+</script>
